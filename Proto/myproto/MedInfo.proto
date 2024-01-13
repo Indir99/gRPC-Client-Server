@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service MedDataExchange {
+    rpc Hello(HelloMsg) returns(HelloMsgReponse) {}
+}
+
+message HelloMsg {
+    int32 medicalDeviceId = 1;
+    string medicalDeviceName = 2;
+}
+
+message HelloMsgReponse {
+    int32 medicalServerId = 1;
+    string medicalServerName = 2;
+}
