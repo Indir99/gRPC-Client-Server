@@ -61,9 +61,51 @@ void GrpcClient::SendSubscribe() {
     }
 }
 
+void GrpcClient::StartReportA(){
+    grpc::ClientContext context;
+    RequestReportA request{m_clientInfo.reportA};
+    PatientData patient;
+    std::unique_ptr< ::grpc::ClientReader< ::PatientData>> reader {
+        m_stub->StartReportsTypaA(&context, request)
+    };
+    while(reader->Read(&patient)) {
+        std::cout<<"*** New Report (Type A) with following data: ***"<<std::endl;
+        std::cout<<"    - Patient id: "<<patient.patientid() << std::endl;
+        std::cout<<"    - Patient first name: "<<patient.patientfirstname() << std::endl;
+        std::cout<<"    - Patient last name: "<<patient.patientlastname() << std::endl;
+        std::cout<<"    - Blood pressure: "<<patient.bloodpressure() << std::endl;
+        std::cout<<"    - Temperature: "<<patient.temperature() << std::endl;
+        std::cout<<"    - Heart rate: "<<patient.heartrate() << std::endl;
+        std::cout<<"    - Time: "<< patient.time() <<std::endl;
+    }
+}
+
+void GrpcClient::StartReportB(){
+    grpc::ClientContext context;
+    RequestReportB request{m_clientInfo.reportB};
+    TherapyData therapy;
+    std::unique_ptr< ::grpc::ClientReader< ::TherapyData>> reader {
+        m_stub->StartReportsTypaB(&context, request)
+    };
+    while(reader->Read(&therapy)) {
+        std::cout<<"*** New Report (Type B) with following data: ***"<<std::endl;
+        std::cout<<"    - Patient id: "<<therapy.patientid() << std::endl;
+        std::cout<<"    - Patient first name: "<<therapy.patientfirstname() << std::endl;
+        std::cout<<"    - Patient last name: "<<therapy.patientlastname() << std::endl;
+        std::cout<<"    - Doctor id: "<<therapy.doctorid() <<std::endl;
+        std::cout<<"    - Doctor name: "<<therapy.doctorfirstname() <<std::endl;
+        std::cout<<"    - Doctor title: "<<therapy.doctortlastname() <<std::endl;
+        std::cout<<"    - Therapy name: "<<therapy.therapyname() <<std::endl;
+        std::cout<<"    - Therapy status: "<< therapy.therapystatus() <<std::endl;
+        std::cout<<"    - Time: "<<therapy.time() <<std::endl;
+    }
+}
+
 void GrpcClient::SendMessages(){
     SendHello();
     SendProbe();
     SendGetDatabase();
     SendSubscribe();
+    StartReportA();
+    StartReportB();
 }

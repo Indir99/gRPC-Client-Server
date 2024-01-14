@@ -5,7 +5,10 @@ service MedDataExchange {
     rpc Probe(ProbeMsg) returns(ProbeMsgResponse) {}
     rpc GetDatabase(GetDatabaseRequest) returns(GetDatabaseResponse) {}
     rpc Subscribe(SubscribeRequest) returns(SubscribeResponse) {}
+    rpc StartReportsTypaA(RequestReportA) returns(stream PatientData){}
+    rpc StartReportsTypaB(RequestReportB) returns(stream TherapyData){}
 }
+
 // Hello
 message HelloMsg {
     int32 medicalDeviceId = 1;
@@ -27,6 +30,7 @@ message ProbeMsgResponse {
     string medicalServerName = 2;
     bool probeMatch = 3;
 }
+
 // GetDatabase
 message GetDatabaseRequest {
     string databaseName = 1;
@@ -37,6 +41,7 @@ message GetDatabaseResponse {
     string databaseState = 2;
     bool accessGranted = 3;
 }
+
 // Subscribe
 message Report {
     int32 reportId = 1;
@@ -54,4 +59,37 @@ message ReportAllowed {
 message SubscribeResponse {
     repeated ReportAllowed allowedReports = 1;
 }
+
+// SendReport A
+message RequestReportA {
+    string status = 1;
+}
+message PatientData {
+    string patientId = 1;
+    string patientFirstName = 2;
+    string patientLastName = 3;
+    string bloodPressure = 4;
+    string temperature = 5;
+    string heartRate = 6;
+    string time = 7;
+}
+
+// SendReport B
+message RequestReportB {
+    string status = 1;
+}
+message TherapyData {
+    string patientID = 1;
+    string patientFirstName = 2;
+    string patientLastName = 3;
+    string doctorID = 4;
+    string doctorFirstName = 5;
+    string doctortLastName = 6;
+    string therapyName = 7;
+    string therapyStatus = 8;
+    string time = 9;
+}
+
+
+
 

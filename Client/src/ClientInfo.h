@@ -7,6 +7,7 @@ constexpr std::array CLIENT_NAME{"Medical Device For Patient Monitoring"};
 constexpr std::array CLIENT_TYPE{"MedDevFPMVer1.7"};
 constexpr std::array DATABASE_NAME{"Patient Database"};
 constexpr std::array DATABASE_ACCESS_KEY{"ack1232dbPat"};
+constexpr std::array START_STATUS{"START"};
 const std::vector<std::pair<int, std::string>> reportVector{
     {25, "ReportTypeA"},
     {27, "ReportTypeB"}
@@ -20,9 +21,12 @@ struct ClientInfo {
     std::string databaseAccessKey;
     HelloMsg helloMsg;
     ProbeMsg probeMsg;
+    RequestReportA reportA;
+    RequestReportB reportB;
     GetDatabaseRequest dbRequest;
     SubscribeRequest subRequest;
     std::vector<Report> repVector;
+
 
     void SetClientInfo() {
         clientId = CLIENT_ID;
@@ -42,6 +46,8 @@ struct ClientInfo {
         dbRequest.set_accesskey(databaseAccessKey);
         // subscribe message
         subRequest = PrepareReports();
+        reportA.set_status(START_STATUS.front());
+        reportB.set_status(START_STATUS.front());
     }
     SubscribeRequest PrepareReports() {
         SubscribeRequest subreq;

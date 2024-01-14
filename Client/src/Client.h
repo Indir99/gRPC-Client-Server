@@ -19,6 +19,8 @@ private:
     void SendProbe();
     void SendGetDatabase();
     void SendSubscribe();
+    void StartReportA();
+    void StartReportB();
     std::unique_ptr<MedDataExchange::Stub> m_stub;
     std::shared_ptr<grpc::Channel> m_channel;
     ClientInfo m_clientInfo;
