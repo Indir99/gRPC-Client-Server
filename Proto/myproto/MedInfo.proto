@@ -2,14 +2,56 @@ syntax = "proto3";
 
 service MedDataExchange {
     rpc Hello(HelloMsg) returns(HelloMsgReponse) {}
+    rpc Probe(ProbeMsg) returns(ProbeMsgResponse) {}
+    rpc GetDatabase(GetDatabaseRequest) returns(GetDatabaseResponse) {}
+    rpc Subscribe(SubscribeRequest) returns(SubscribeResponse) {}
 }
-
+// Hello
 message HelloMsg {
     int32 medicalDeviceId = 1;
     string medicalDeviceName = 2;
 }
-
 message HelloMsgReponse {
     int32 medicalServerId = 1;
     string medicalServerName = 2;
 }
+
+// Probe
+message ProbeMsg {
+    int32 medicalDeviceId = 1;
+    string medicalDeviceName = 2;
+    string medicalDeviceType = 3;
+}
+message ProbeMsgResponse {
+    int32 medicalServerId = 1;
+    string medicalServerName = 2;
+    bool probeMatch = 3;
+}
+// GetDatabase
+message GetDatabaseRequest {
+    string databaseName = 1;
+    string accessKey = 2;
+}
+message GetDatabaseResponse {
+    string databaseName = 1;
+    string databaseState = 2;
+    bool accessGranted = 3;
+}
+// Subscribe
+message Report {
+    int32 reportId = 1;
+    string reportName = 2;
+}
+message SubscribeRequest {
+    string requestType = 1;
+    repeated Report reports = 2;
+}
+message ReportAllowed {
+    int32 reportId = 1;
+    string reportName = 2;
+    bool allowed = 3;
+}
+message SubscribeResponse {
+    repeated ReportAllowed allowedReports = 1;
+}
+
