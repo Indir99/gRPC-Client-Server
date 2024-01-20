@@ -1,6 +1,16 @@
 #include "Client.h"
 
 
+namespace {
+std::string GetCurrentTime(){
+    auto currentTime = std::chrono::system_clock::now();
+    std::time_t currentTimeT = std::chrono::system_clock::to_time_t(currentTime);
+    char timeBuffer[80];
+    std::strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %H:%M:%S", std::localtime(&currentTimeT));
+    return std::string{timeBuffer};
+}
+} // namespace
+
 void GrpcClient::SendHello() {
     grpc::ClientContext context;
     HelloMsg request{m_clientInfo.helloMsg};
@@ -101,6 +111,40 @@ void GrpcClient::StartReportB(){
     }
 }
 
+void GrpcClient::SetNewMeasurement(){
+    grpc::ClientContext context;
+    MeasurementOperation request;
+    request.set_patientid("P001");
+    request.set_operation("Start measurements");
+    request.set_time(GetCurrentTime());
+    MeasurementOperationConfirmation response;
+    grpc::Status status = m_stub->SetNewMeasurement(&context, request, &response);
+    std::cout<<"*** Client received following answer (SetNewMeasurement message) ***"<<std::endl;
+    std::cout<<"Confirmation status: "<< response.confirmation() <<std::endl;
+}
+
+void GrpcClient::SetValue(){
+    grpc::ClientContext context;
+    SetValueOperation request;
+    request.set_patientid("POO1");
+    request.set_operation("Change the dose!");
+    request.set_value("85");
+    request.set_time(GetCurrentTime());
+    SetValueOperationConfirmation response;
+    grpc::Status status = m_stub->SetValue(&context, request, &response);
+    std::cout<<"*** Client received following answer (SetValue message) ***"<<std::endl;
+    std::cout<<"Confirmation status: "<< response.confirmation() <<std::endl;
+}
+
+void GrpcClient::SendBye(){
+    grpc::ClientContext context;
+    ByeMsg request{m_clientInfo.byeMsg};
+    ByeMsgResponse response;
+    grpc::Status status = m_stub->Bye(&context, request, &response);
+    std::cout<<"*** Client received following answer (Bye message) ***"<<std::endl;
+    std::cout<<"Confirmation status: "<< response.confirmation() <<std::endl;
+}
+
 void GrpcClient::SendMessages(){
     SendHello();
     SendProbe();
@@ -108,4 +152,8 @@ void GrpcClient::SendMessages(){
     SendSubscribe();
     StartReportA();
     StartReportB();
+    SetNewMeasurement();
+    SetValue();
+    SendBye();
+
 }

@@ -21,6 +21,10 @@ private:
     void SendSubscribe();
     void StartReportA();
     void StartReportB();
+    void SetNewMeasurement();
+    void SetValue();
+    void SendBye();
+
     std::unique_ptr<MedDataExchange::Stub> m_stub;
     std::shared_ptr<grpc::Channel> m_channel;
     ClientInfo m_clientInfo;

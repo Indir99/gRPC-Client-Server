@@ -26,6 +26,7 @@ struct ClientInfo {
     GetDatabaseRequest dbRequest;
     SubscribeRequest subRequest;
     std::vector<Report> repVector;
+    ByeMsg byeMsg;
 
 
     void SetClientInfo() {
@@ -48,6 +49,9 @@ struct ClientInfo {
         subRequest = PrepareReports();
         reportA.set_status(START_STATUS.front());
         reportB.set_status(START_STATUS.front());
+        // bye msg
+        byeMsg.set_medicaldevicename(clientName);
+        byeMsg.set_medicaldeviceid(clientId);
     }
     SubscribeRequest PrepareReports() {
         SubscribeRequest subreq;

@@ -33,6 +33,19 @@ public:
     virtual ::grpc::Status StartReportsTypaB(::grpc::ServerContext*
                                              context, const ::RequestReportB* request,
                                              ::grpc::ServerWriter< ::TherapyData>* writer) override;
+
+    virtual ::grpc::Status SetNewMeasurement(::grpc::ServerContext* context,
+                                             const ::MeasurementOperation* request,
+                                             ::MeasurementOperationConfirmation* response) override;
+
+    virtual ::grpc::Status SetValue(::grpc::ServerContext* context,
+                                    const ::SetValueOperation* request,
+                                    ::SetValueOperationConfirmation* response) override;
+
+    virtual ::grpc::Status Bye(::grpc::ServerContext* context,
+                               const ::ByeMsg* request,
+                               ::ByeMsgResponse* response) override;
+
 private:
     bool ValidateDevice(const ::ProbeMsg* data);
     bool ValidateDeviceById(int id);

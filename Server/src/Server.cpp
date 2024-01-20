@@ -67,6 +67,7 @@
     for(const auto& item : PatientDataList){
         writer->Write(item);
     }
+    std::cout<<"Reports sent successfully!"<<std::endl;
     return ::grpc::Status::OK;
 }
 
@@ -80,9 +81,46 @@
     for(const auto& item : TherapyDataList) {
         writer->Write(item);
     }
+    std::cout<<"Reports sent successfully!"<<std::endl;
     return ::grpc::Status::OK;
 }
 
+::grpc::Status GrpcServer::SetNewMeasurement(::grpc::ServerContext* context,
+                                             const ::MeasurementOperation* request,
+                                             ::MeasurementOperationConfirmation* response) {
+
+    std::cout<<"*** New message received (SetNewMeasurement) ***" <<std::endl;
+    std::cout<<"    Patiend ID: " << request->patientid() << std::endl;
+    std::cout<<"    Operation: " << request->operation() << std::endl;
+    std::cout<<"    Time: " << request->time() << std::endl;
+    std::cout<<" -> Measurement stared! " << std::endl;
+    response->set_confirmation("The operation was successfully performed.");
+    return ::grpc::Status::OK;
+}
+
+::grpc::Status GrpcServer::SetValue(::grpc::ServerContext* context,
+                                    const ::SetValueOperation* request,
+                                    ::SetValueOperationConfirmation* response) {
+
+    std::cout<<"*** New message received (SetValue) ***" <<std::endl;
+    std::cout<<"    Patiend ID: " << request->patientid() << std::endl;
+    std::cout<<"    Operation: " << request->operation() << std::endl;
+    std::cout<<"    Value: "<< request->value() << std::endl;
+    std::cout<<"    Time: " << request->time() << std::endl;
+    response->set_confirmation("The operation was successfully performed.");
+    return ::grpc::Status::OK;
+}
+
+::grpc::Status GrpcServer::Bye(::grpc::ServerContext* context,
+                               const ::ByeMsg* request,
+                               ::ByeMsgResponse* response) {
+
+    std::cout<<"*** New message received (Bye) ***" <<std::endl;
+    std::cout<<"    Device id: " << request->medicaldeviceid() << std::endl;
+    std::cout<<"    Device name: "<< request->medicaldevicename() << std::endl;
+    response->set_confirmation("The operation was successfully performed.");
+    return ::grpc::Status::OK;
+}
 
 std::vector<PatientData> GrpcServer::PreparePatientDataVecor() {
     std::vector<PatientData> patVector;
@@ -151,7 +189,6 @@ TherapyData GrpcServer::PrepareTherapyData(std::string patientID,
     therpay.set_time(formattedTime);
     return therpay;
 }
-
 
 bool GrpcServer::ValidateDevice(const ::ProbeMsg* data) {
     //TODO: Consider other ways of validation

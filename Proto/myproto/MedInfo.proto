@@ -7,6 +7,9 @@ service MedDataExchange {
     rpc Subscribe(SubscribeRequest) returns(SubscribeResponse) {}
     rpc StartReportsTypaA(RequestReportA) returns(stream PatientData){}
     rpc StartReportsTypaB(RequestReportB) returns(stream TherapyData){}
+    rpc SetNewMeasurement(MeasurementOperation) returns(MeasurementOperationConfirmation) {}
+    rpc SetValue(SetValueOperation) returns(SetValueOperationConfirmation){}
+    rpc Bye(ByeMsg) returns(ByeMsgResponse){}
 }
 
 // Hello
@@ -90,6 +93,32 @@ message TherapyData {
     string time = 9;
 }
 
+// Measurement operation
+message MeasurementOperation {
+    string patientID = 1;
+    string operation = 2;
+    string time = 3;
+}
+message MeasurementOperationConfirmation {
+    string confirmation = 1;
+}
 
+// Set Value operation
+message SetValueOperation {
+    string patientID = 1;
+    string operation = 2;
+    string value = 3;
+    string time = 4;
+}
+message SetValueOperationConfirmation {
+    string confirmation = 1;
+}
 
-
+// Bye
+message ByeMsg {
+    int32 medicalDeviceId = 1;
+    string medicalDeviceName = 2;
+}
+message ByeMsgResponse {
+    string confirmation = 1;
+}
