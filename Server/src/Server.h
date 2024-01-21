@@ -6,7 +6,6 @@
 
 class GrpcServer final : public MedDataExchange::Service {
 public:
-
     GrpcServer(ServerInformation serverInfo)
         : m_serverInfo{serverInfo} {}
 

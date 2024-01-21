@@ -34,8 +34,8 @@ void GrpcClient::SendProbe() {
     } else {
         std::cout<<"false "<<std::endl;
     }
-
 }
+
 void GrpcClient::SendGetDatabase() {
     grpc::ClientContext context;
     GetDatabaseRequest request{m_clientInfo.dbRequest};

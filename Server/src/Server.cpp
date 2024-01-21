@@ -41,7 +41,9 @@
     return ::grpc::Status::OK;
 }
 
-::grpc::Status GrpcServer::Subscribe(::grpc::ServerContext* context, const ::SubscribeRequest* request, ::SubscribeResponse* response) {
+::grpc::Status GrpcServer::Subscribe(::grpc::ServerContext* context,
+                                     const ::SubscribeRequest* request,
+                                     ::SubscribeResponse* response) {
     std::cout<<"*** New message received (Subscribe) ***" <<std::endl;
     std::cout<<"    Request type: "<<request->requesttype()<<std::endl;
     std::cout<<"    Reports list:  " <<std::endl;

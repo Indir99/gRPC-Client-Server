@@ -7,12 +7,12 @@
 
 class GrpcClient {
 public:
-    GrpcClient(const grpc::string& target, ClientInfo clInfo) {
+    GrpcClient(const grpc::string& target,
+               ClientInfo clInfo) {
         m_channel = grpc::CreateChannel(target, grpc::InsecureChannelCredentials());
         m_stub = MedDataExchange::NewStub(m_channel);
         m_clientInfo = clInfo;
     }
-
     void SendMessages();
 private:
     void SendHello();
